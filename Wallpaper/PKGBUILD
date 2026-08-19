@@ -1,34 +1,155 @@
 # Maintainer: Sohrab Behdani <behdanisohrab@gmail.com>
-pkgname=parch-wallpapers
-pkgver=1
-pkgver=1.5
-pkgrel=0
-pkgdesc='Wallpapers for Parch Linux'
+
+pkgbase=parch-wallpapers
+pkgname=(
+  parch-wallpaper-auroralayers
+  parch-wallpaper-damavand
+  parch-wallpaper-geometric
+  parch-wallpaper-imaginary-landscape
+  parch-wallpaper-natural
+  parch-wallpaper-paisley
+  parch-wallpaper-fifth-anniversary
+  parch-wallpaper-forth-anniversary
+  parch-wallpaper-parch-wallpaper
+  parch-wallpaper-parch
+  parch-wallpaper-parch2
+  parch-wallpaper-sketchy-background
+  parch-wallpapers
+)
+pkgver=2.1
+pkgrel=1
+pkgdesc='Meta package for all Parch Linux wallpapers'
 arch=("any")
 url="https://github.com/parchlinux/arts"
 license=("BSD-3-Clause")
-source=("git+https://git.parchlinux.com/artwork/Arts")
-provides=("${pkgname}")
-conflicts=("${pkgname}")
+source=("git+https://github.com/parchlinux/arts")
 md5sums=('SKIP')
 
+_folders=(
+  "AuroraLayers"
+  "damavand"
+  "Geometric-wallpapers"
+  "Imaginary_landscape"
+  "Natural-wallpapers"
+  "Paisley"
+  "parch-fifth-anniversary"
+  "parch-forth-anniversary"
+  "Parch-wallpaper"
+  "Parch"
+  "PArch2"
+  "Sketchy-background"
+)
+
+declare -A _pkgname_map=(
+  ["AuroraLayers"]="parch-wallpaper-auroralayers"
+  ["damavand"]="parch-wallpaper-damavand"
+  ["Geometric-wallpapers"]="parch-wallpaper-geometric"
+  ["Imaginary_landscape"]="parch-wallpaper-imaginary-landscape"
+  ["Natural-wallpapers"]="parch-wallpaper-natural"
+  ["Paisley"]="parch-wallpaper-paisley"
+  ["parch-fifth-anniversary"]="parch-wallpaper-fifth-anniversary"
+  ["parch-forth-anniversary"]="parch-wallpaper-forth-anniversary"
+  ["Parch-wallpaper"]="parch-wallpaper-parch-wallpaper"
+  ["Parch"]="parch-wallpaper-parch"
+  ["PArch2"]="parch-wallpaper-parch2"
+  ["Sketchy-background"]="parch-wallpaper-sketchy-background"
+)
+
 prepare() {
-    cd "$srcdir/Wallpaper"
+    cd "$srcdir/arts/Wallpaper"
     bash mkgnome.sh
 }
 
-package() {
-    cd "$srcdir/Wallpaper"
+package_parch-wallpaper-auroralayers() {
+    pkgdesc='AuroraLayers wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/AuroraLayers"
+}
 
-    # Create the base destination directory
-    install -d "${pkgdir}/usr/share/wallpapers/"
+package_parch-wallpaper-damavand() {
+    pkgdesc='damavand wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/damavand"
+}
 
-    # Install all image files from all subdirectories
-    find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) -exec install -Dm644 {} "${pkgdir}/usr/share/wallpapers/{}" \;
+package_parch-wallpaper-geometric() {
+    pkgdesc='Geometric wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/Geometric-wallpapers"
+}
 
-    # License
-    install -Dm644 ../LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+package_parch-wallpaper-imaginary-landscape() {
+    pkgdesc='Imaginary landscape wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/Imaginary_landscape"
+}
 
-    # GNOME background properties XML
-    install -Dm644 parch-wallpapers.xml "${pkgdir}/usr/share/gnome-background-properties/parch-wallpapers.xml"
+package_parch-wallpaper-natural() {
+    pkgdesc='Natural wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/Natural-wallpapers"
+}
+
+package_parch-wallpaper-paisley() {
+    pkgdesc='Paisley wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/Paisley"
+}
+
+package_parch-wallpaper-fifth-anniversary() {
+    pkgdesc='Parch fifth anniversary wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/parch-fifth-anniversary"
+}
+
+package_parch-wallpaper-forth-anniversary() {
+    pkgdesc='Parch forth anniversary wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/parch-forth-anniversary"
+}
+
+package_parch-wallpaper-parch-wallpaper() {
+    pkgdesc='Parch wallpaper collection'
+    _install_folder "$srcdir/arts/Wallpaper/Parch-wallpaper"
+}
+
+package_parch-wallpaper-parch() {
+    pkgdesc='Parch wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/Parch"
+}
+
+package_parch-wallpaper-parch2() {
+    pkgdesc='PArch2 wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/PArch2"
+}
+
+package_parch-wallpaper-sketchy-background() {
+    pkgdesc='Sketchy background wallpapers'
+    _install_folder "$srcdir/arts/Wallpaper/Sketchy-background"
+}
+
+package_parch-wallpapers() {
+    pkgdesc='Wallpapers for Parch Linux (meta package)'
+    depends=(
+        parch-wallpaper-auroralayers
+        parch-wallpaper-damavand
+        parch-wallpaper-geometric
+        parch-wallpaper-imaginary-landscape
+        parch-wallpaper-natural
+        parch-wallpaper-paisley
+        parch-wallpaper-fifth-anniversary
+        parch-wallpaper-forth-anniversary
+        parch-wallpaper-parch-wallpaper
+        parch-wallpaper-parch
+        parch-wallpaper-parch2
+        parch-wallpaper-sketchy-background
+    )
+
+    install -Dm644 "$srcdir/arts/Wallpaper/parch-wallpapers.xml" \
+        "${pkgdir}/usr/share/gnome-background-properties/parch-wallpapers.xml"
+
+    install -Dm644 "${srcdir}/arts/LICENSE" \
+        "${pkgdir}/usr/share/licenses/parch-wallpapers/LICENSE"
+}
+
+_install_folder() {
+    local folder="$1"
+    local folder_name
+    folder_name=$(basename "$folder")
+
+    install -d "${pkgdir}/usr/share/wallpapers/${folder_name}"
+    find "$folder" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) \
+        -exec install -Dm644 {} "${pkgdir}/usr/share/wallpapers/${folder_name}/$(basename {})" \;
 }
